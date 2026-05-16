@@ -3,6 +3,7 @@ loguru
 PySide6
 xdg
 psutil
+packaging
 numpy
 rdp
 torch

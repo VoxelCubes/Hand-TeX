@@ -335,12 +335,17 @@ def load_dict_to_attrs_safely(
     :return: A list of exceptions that occurred during loading.
     """
     recoverable_exceptions: list[RecoverableParseException] = []
-    type_info = get_type_hints(dataclass)
+
+    # Python 3.14 is stricter about `get_type_hints()` and no longer accepts
+    # instances directly. This helper is used with attrs instances, so resolve
+    # the class first while still supporting callers that may pass a class.
+    dataclass_type = dataclass if isinstance(dataclass, type) else type(dataclass)
+    type_info = get_type_hints(dataclass_type)
     # Gather type hints from base classes if requested.
     if include_until_base:
         if not isinstance(include_until_base, list):
             include_until_base = [include_until_base]
-        base_classes = list(type(dataclass).__bases__)
+        base_classes = list(dataclass_type.__bases__)
         while base_classes:
             base_class = base_classes.pop(0)
             type_info.update(get_type_hints(base_class))

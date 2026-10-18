@@ -25,6 +25,17 @@ run:
 run-pyinstaller-venv:
 	PYTHONPATH=. $(PYINSTALLER_VENV)/bin/python handtex/main.py
 
+setup-venv:
+	python -m venv venv
+	$(PYTHON) -m pip install --upgrade pip
+	$(PYTHON) -m pip install -r requirements.txt
+
+setup-venv-training:
+	python -m venv venv
+	$(PYTHON) -m pip install --upgrade pip
+	$(PYTHON) -m pip install -r requirements.txt
+	$(PYTHON) -m pip install -r requirements_training.txt
+
 # build target
 build:
 	$(PYTHON) -m build --outdir $(BUILD_DIR)
